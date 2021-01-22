@@ -6,12 +6,12 @@ import vuetify from "./plugins/vuetify";
 import VueSocketIO from "vue-socket.io";
 import VueDragscroll from "vue-dragscroll";
 Vue.config.productionTip = false;
-// Vue.use(
-//   new VueSocketIO({
-//     debug: false,
-//     connection: "http://192.168.1.2:3000",
-//   })
-// );
+Vue.use(
+  new VueSocketIO({
+    debug: false,
+    connection: "http://localhost:3000",
+  })
+);
 // import VueDraggable from "vue-draggable";
 
 Vue.use(VueDragscroll);

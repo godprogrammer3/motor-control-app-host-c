@@ -11,8 +11,8 @@
     <v-container fluid class="pa-0">
     <v-row class="elevation-2" style="background-color:white;" align="center" justify="center">
       <v-col align="center" justify="center"><span class="indigo--text text-h5">หมายเลขงาน :</span><span class="text-h5 ml-2">1234</span></v-col>
-      <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">20 ซม.</span></v-col>
-      <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวแผ่น :</span ><span class="text-h5 ml-2">30 ซม.</span></v-col>
+      <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">20 นิ้ว</span></v-col>
+      <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวแผ่น :</span ><span class="text-h5 ml-2">30 มม.</span></v-col>
       <v-col align="center" justify="center"><span class="indigo--text text-h5">จำนวนแผ่น :</span><span class="text-h5 ml-2">10 แผ่น</span></v-col>
       <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวงาน :</span><span class="text-h5 ml-2">15.2 เมตร</span></v-col>
     </v-row>
@@ -94,8 +94,8 @@
         >
         <v-row align="center" justify="center">
           <v-col align="center" justify="center"><span class="indigo--text text-h5">หมายเลขงาน :</span><span class="text-h5 ml-2">1235</span></v-col>
-          <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">21 ซม.</span></v-col>
-          <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวแผ่น :</span ><span class="text-h5 ml-2">31 ซม.</span></v-col>
+          <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">21 นิ้ว</span></v-col>
+          <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวแผ่น :</span ><span class="text-h5 ml-2">31 มม.</span></v-col>
           <v-col align="center" justify="center"><span class="indigo--text text-h5">จำนวนแผ่น :</span><span class="text-h5 ml-2">11 แผ่น</span></v-col>
           <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวงาน :</span><span class="text-h5 ml-2">16.2 เมตร</span></v-col>
         </v-row>
@@ -111,7 +111,7 @@
           "
           class="text-h5"
         >
-          เปลี่ยนกระดาษ
+          เปลี่ยนกระดาษหรือมีปัญหา
         </v-btn>
       </v-col>
     </v-row>
@@ -129,7 +129,7 @@
 <script>
 import { mapActions } from "vuex";
 import Popup from "@/components/Popup.vue";
-// import PopupHome from "@/components/PopupHome.vue";
+import API from "@/store/api";
 export default {
   components: {
     Popup,
@@ -205,6 +205,7 @@ export default {
       offset: 100,
       isShowHomePopup: false,
       isPersistent:true,
+      api: new API()
     };
   },
   methods: {
@@ -227,10 +228,15 @@ export default {
           this.isDialogShow = false;
           this.dialogValue = {};
         }else if(event.value == "confirm"){
+          this.api.changePaper();
           this.isDialogShow = false;
-          this.dialogType = "confirm";
-          this.dialogValue = { str:'changingPaper' };
+          this.dialogType = "changingPaper";
+          this.dialogValue = {};
           this.isDialogShow = true;
+        }else if(event.value == "finish"){
+          this.api.finishChangePaper();
+          this.isDialogShow = false;
+          this.dialogValue = {};
         }
       } 
     },
@@ -270,19 +276,17 @@ export default {
     },
   },
   mounted() {
-    // socket.on("Speed2", function(msg) {
-    //   this.speed = msg;
-    // });
+    this.dialogType = "addWastPaper";
+    this.dialogValue = null;
+    this.isDialogShow = true;
   },
   sockets: {
     connect: function() {
       console.log("socket connected");
     },
-    test: function(data) {
-      console.log(
-        'this method was fired by the socket server. eg: io.emit("customEmit", data)'
-      );
+    CANCEL_JOB: function(data) {
       console.log(data);
+      this.$router.replace({path:'/'}).catch(()=>{});
     },
   },
 };

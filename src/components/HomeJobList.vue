@@ -12,7 +12,7 @@
     <v-row justify="center" align="center">
       <v-list
         class="mt-3 list-class"
-        style="height:73vh;"
+        style="height:75vh;"
       >
         <draggable
           v-model="items"
@@ -60,7 +60,7 @@
         </draggable>
       </v-list></v-row
     >
-     <v-row align="center" justify="center" style="height:10vh;">
+     <!-- <v-row align="center" justify="center" style="height:10vh;">
       <v-col align="center" justify="center">
         <v-btn
           color="indigo"
@@ -74,7 +74,7 @@
           เปลี่ยนกระดาษ
         </v-btn>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-dialog v-model="isDialogShow" class="elevation-0" elevation="0" persistent>
       <Popup
         :type="dialogType"
@@ -165,6 +165,16 @@ export default {
         this.items = newValue;
       }
     }
+  },
+  sockets: {
+    connect: function() {
+      console.log("socket connected");
+    },
+    CHECK_HOST_C: function(data) {
+      console.log('Requested host c check at',data);
+      this.$socket.emit('CHECK_HOST_C_RESPONSE',data);
+      this.$router.replace({path:'/operating'});
+    },
   },
 };
 </script>

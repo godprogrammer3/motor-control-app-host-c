@@ -35,7 +35,7 @@
         </v-card>
       </v-col>
       <v-col>
-        <TouchKeyboardWithFinish @keyboard-event="keyboardEventHandler" ></TouchKeyboardWithFinish>
+        <TouchKeyboard @keyboard-event="keyboardEventHandler" ></TouchKeyboard>
       </v-col>
     </v-row>
     <v-dialog v-model="isDialogShow" elevation="0" :persistent="true">
@@ -56,13 +56,13 @@
 </template>
 
 <script>
-import TouchKeyboardWithFinish from "./TouchKeyboardWithFinish";
+import TouchKeyboard from './TouchKeyboard';
 import PopupConfirmAddWastPaper from "./PopupConfirmAddWastPaper";
 import PopupConfirmAddWastPaperComplete from "./PopupAddWastPaperComplete";
 import API from "@/store/api";
 export default {
   components: {
-    TouchKeyboardWithFinish,
+    TouchKeyboard,
     PopupConfirmAddWastPaper,
     PopupConfirmAddWastPaperComplete
   },
@@ -119,9 +119,6 @@ export default {
             this.dialogType = 'confirmAddWastPaper';
             this.isDialogShow = true;
           }
-        }else if( event.value == 'finish'){
-          
-          this.$emit('popup-changing-paper-event',{type:'action',value:'finish'})
         }
       }
     },
@@ -184,7 +181,7 @@ sockets: {
     },
     CANCEL_JOB: function(data) {
       console.log(data);
-      this.$router.replace({path:'/'});
+      this.$router.replace({path:'/'}).catch(()=>{});
     },
   },
 };
