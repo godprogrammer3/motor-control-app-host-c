@@ -10,14 +10,6 @@ const routes = [
     name: "Home",
     component: Home,
   },
-  // {
-  //   path: "/",
-  //   name: "Operating",
-  //   component: Operating,
-  //   props: (route) => ({
-  //     ...route.params,
-  //   }),
-  // },
   {
     path: "/operating",
     name: "Operating",

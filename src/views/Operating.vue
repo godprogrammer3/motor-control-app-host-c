@@ -1,17 +1,16 @@
 <template>
   <div>
     <v-app-bar color="indigo darken-4" style="height:70px" flat>
-      <span class="white--text text-h4 mr-5">กลุ่มที่ 1</span>
+      <span class="white--text text-h4 mr-5">กลุ่มหมายเลข  {{group.group_id}}</span>
       <v-toolbar-title class="white--text text-h4"
         >กำลังดำเนินงาน...</v-toolbar-title
       >
-      <span class="white--text text-h4 ml-5">80%</span>
-      <span class="white--text text-h4 ml-5">(8/10 งาน)</span>
+      <span class="white--text text-h4 ml-5">({{currentJobOrder}}/{{group.job.length}} งาน)</span>
     </v-app-bar>
     <v-container fluid class="pa-0">
     <v-row class="elevation-2" style="background-color:white;" align="center" justify="center">
-      <v-col align="center" justify="center"><span class="indigo--text text-h5">หมายเลขงาน :</span><span class="text-h5 ml-2">1234</span></v-col>
-      <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">20 นิ้ว</span></v-col>
+      <v-col align="center" justify="center"><span class="indigo--text text-h5">หมายเลขงาน :</span><span class="text-h5 ml-2">{{group.job[currentOrder].job_id}}</span></v-col>
+      <v-col align="center" justify="center"><span class="indigo--text text-h5">หน้ากว้าง :</span><span class="text-h5 ml-2">{{group.job[currentOrder].width} นิ้ว</span></v-col>
       <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวแผ่น :</span ><span class="text-h5 ml-2">30 มม.</span></v-col>
       <v-col align="center" justify="center"><span class="indigo--text text-h5">จำนวนแผ่น :</span><span class="text-h5 ml-2">10 แผ่น</span></v-col>
       <v-col align="center" justify="center"><span class="indigo--text text-h5">ความยาวงาน :</span><span class="text-h5 ml-2">15.2 เมตร</span></v-col>
@@ -111,7 +110,7 @@
           "
           class="text-h5"
         >
-          เปลี่ยนกระดาษหรือมีปัญหา
+          เปลี่ยนกระดาษหรือเกิดปัญหา
         </v-btn>
       </v-col>
     </v-row>
@@ -205,7 +204,8 @@ export default {
       offset: 100,
       isShowHomePopup: false,
       isPersistent:true,
-      api: new API()
+      api: new API() ,
+      currentJobOrder:0
     };
   },
   methods: {
@@ -276,6 +276,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.group);
     this.dialogType = "addWastPaper";
     this.dialogValue = null;
     this.isDialogShow = true;
@@ -286,8 +287,12 @@ export default {
     },
     CANCEL_JOB: function(data) {
       console.log(data);
-      this.$router.replace({path:'/'}).catch(()=>{});
+      this.$router.replace({path:'/'}).catch((error)=>{
+        console.log('->In operating page:')
+        console.log(error);
+      });
     },
+    
   },
 };
 </script>

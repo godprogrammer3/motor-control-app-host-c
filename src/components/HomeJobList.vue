@@ -173,8 +173,14 @@ export default {
     CHECK_HOST_C: function(data) {
       console.log('Requested host c check at',data);
       this.$socket.emit('CHECK_HOST_C_RESPONSE',data);
-      this.$router.replace({path:'/operating'});
     },
+    START_WORK:function(data){
+      console.log('->This in HomJobList>Scockets>START_WORK:');
+      console.log('Start work from server',data);
+      this.$router.replace({name:'Operating',params:{
+            group:data
+          }});
+    }
   },
 };
 </script>

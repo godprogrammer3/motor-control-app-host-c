@@ -169,6 +169,8 @@ export default {
   },
   confirmAddWastPaperCompleteEventHandler(event){
     if(event == 'ok'){
+      this.wast = '';
+      this.$refs.form.resetValidation();
       this.isDialogShow = false;
     }
   }
@@ -177,15 +179,11 @@ sockets: {
     connect: function() {
       console.log("socket connected in Popup add wast paper");
     },
-    START_WORK: function(data) {
-      console.log('start work from socket io server.');
-      console.log(data);
-      this.$emit('popup-add-wast-paper-event',{type: 'action',value:'cancel'});
-    },
-    CANCEL_JOB: function(data) {
-      console.log(data);
-      this.$router.replace({path:'/'});
-    },
+    // START_WORK: function(data) {
+    //   console.log('start work from socket io server.');
+    //   console.log(data);
+    //   this.$emit('popup-add-wast-paper-event',{type: 'action',value:'cancel',extraValue:data});
+    // },
   },
 };
 </script>

@@ -2,7 +2,7 @@ import axios from "axios";
 class API {
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:3000",
+      baseURL: "http://localhost:3001",
       adapter: require("axios/lib/adapters/http"),
     });
   }
@@ -300,6 +300,21 @@ class API {
   }
   finishChangePaper() {
     this.instance.get("/finishChangePaper");
+  }
+  async addWasteInitial(wastePaper) {
+    try {
+      var result = await this.instance.put(
+        `/addWasteInitial?wastePaper=${wastePaper}`
+      );
+      if (result.status == 204) {
+        return { status: 0 };
+      } else {
+        return { status: result.status, value: result.data };
+      }
+    } catch (error) {
+      console.log(error);
+      return { status: -1 };
+    }
   }
 }
 export default API;

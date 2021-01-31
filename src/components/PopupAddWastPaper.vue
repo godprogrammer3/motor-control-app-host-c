@@ -23,7 +23,6 @@
                 counter
                 maxlength="8"
                 :rules="wastRules"
-
               >
               </v-text-field
             >
@@ -142,7 +141,8 @@ export default {
         if(event.target.id == 'wast'){
           if(this.wast != ''){
             if (this.$refs.form.validate()) {
-            this.isDialogShow = true;
+              this.dialogType = 'confirmAddWastPaper';
+              this.isDialogShow = true;
           }
           }else{
               element = this.$refs.wast.$el.querySelector("input");
@@ -154,10 +154,10 @@ export default {
         }
       }
   },
-  confirmAddWastPaperEventHandler(event){
-    console.log(event);
+  async confirmAddWastPaperEventHandler(event){
     if( event == 'confirm'){
       this.isDialogShow = false;
+      this.api.addWasteInitial(this.wast);
       this.dialogType = 'confirmAddWastPaperComplete';
       this.isDialogShow = true;
     }else{
@@ -166,6 +166,8 @@ export default {
   },
   confirmAddWastPaperCompleteEventHandler(event){
     if(event == 'ok'){
+      this.wast = '';
+      this.$refs.form.resetValidation();
       this.isDialogShow = false;
     }
   }
@@ -177,11 +179,7 @@ sockets: {
     START_WORK: function(data) {
       console.log('start work from socket io server.');
       console.log(data);
-      this.$emit('popup-add-wast-paper-event',{type: 'action',value:'cancel'});
-    },
-    CANCEL_JOB: function(data) {
-      console.log(data);
-      this.$router.replace({path:'/'}).catch(()=>{});
+      this.$emit('popup-add-wast-paper-event',{type: 'action',value:'cancel' , extraValue: data});
     },
   },
 };

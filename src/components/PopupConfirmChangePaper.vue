@@ -5,7 +5,7 @@
           >
     </v-row>
     <v-row align="center" justify="center"
-      ><span>ยืนยันที่จะเปลี่ยนกระดาษ</span>
+      ><span>มีการเปลี่ยนกระดาษหรือเกิดปัญหา</span>
     </v-row>
     <v-row align="center" justify="center"
       ><span>ใช่หรือไม่ ?</span></v-row

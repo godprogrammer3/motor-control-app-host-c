@@ -14,7 +14,7 @@
       class="align-center"
       @popup-add-wast-paper-event="
         (event) =>
-          $emit('popup-event', { type: event.type, value: event.value })
+          $emit('popup-event', { type: event.type, value: event.value ,extraValue:event.extraValue})
       "
     >
     </PopupAddWastPaper>
