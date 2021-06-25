@@ -10,6 +10,17 @@
       <span class="white--text text-h4 ml-5"
         >({{ currentJobOrder + 1 }}/{{ group.jobs.length }} งาน)</span
       >
+      <v-spacer></v-spacer>
+      <v-btn
+        class="mx-2"
+        medium
+        dark
+        fab
+        color="red darken-2"
+        @click="cancelJob()"
+      >
+        <v-icon x-large dark>close</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-container fluid class="pa-0">
       <v-row
@@ -191,6 +202,30 @@
           <v-row align="center" justify="center">
             <v-switch
               style="transform:scale(1.3);"
+              v-model="isSlowMode"
+              inset
+              color="green"
+            >
+              <template v-slot:label>
+                <span :class="isAutoMode ? 'green--text' : 'orange--text'">{{
+                  isSlowMode ? "โหมดช้า" : "โหมดเร็ว"
+                }}</span>
+                <v-icon
+                  style="margin-left:5px;transform:scale(1.1);"
+                  x-large
+                  :color="isSlowMode ? 'green' : 'orange'"
+                >
+                  {{ isSlowMode ? "sync" : "sync_disabled" }}
+                </v-icon>
+              </template>
+            </v-switch>
+            
+          </v-row>
+        </v-col>
+        <v-col justify="center" style="width:100%;">
+          <v-row align="center" justify="center">
+            <v-switch
+              style="transform:scale(1.3);"
               v-model="isAutoMode"
               inset
               color="green"
@@ -208,6 +243,7 @@
                 </v-icon>
               </template>
             </v-switch>
+            
           </v-row>
         </v-col>
         <v-col align="center" justify="center">
@@ -231,6 +267,13 @@
           @popup-event="popupEventHandler"
         ></Popup>
       </v-dialog>
+       <v-overlay :value="overlay"
+      ><v-progress-circular
+        :size="50"
+        color="indigo"
+        indeterminate
+      ></v-progress-circular
+    ></v-overlay>
     </v-container>
   </div>
 </template>
@@ -238,7 +281,7 @@
 <script>
 import { mapActions } from "vuex";
 import Popup from "@/components/Popup/Popup.vue";
-import API from "@/store/api";
+import * as API from "../utills/api";
 export default {
   components: {
     Popup,
@@ -266,9 +309,9 @@ export default {
       offset: 100,
       isShowHomePopup: false,
       isPersistent: true,
-      api: new API(),
       currentJobOrder: 0,
       finishLength: 0.0,
+      overlay:false
     };
   },
   methods: {
@@ -285,7 +328,7 @@ export default {
       this.dialogValue = { str: "cancelJob", value: this.group };
       this.isDialogShow = true;
     },
-    popupEventHandler(event) {
+    async popupEventHandler(event){
       console.log(event);
       if (event.type == "action") {
         if (event.value == "cancel") {
@@ -310,6 +353,21 @@ export default {
           this.isDialogShow = true;
         } else if (event.value == "ok") {
           this.isDialogShow = false;
+        }
+      }else if (event.type == "confirm-cancel-job") {
+        if (event.value == "cancel") {
+          this.isDialogShow = false;
+        } else if (event.value == "yes") {
+          this.overlay = true;
+          const result = await API.processes.notifyNCClientToCancelWork();
+           this.overlay = false;
+          if(!result.successful){
+            this.dialogType = 'error';
+            this.dialogValue = { errorMessage:'เครื่อง C ไม่ได้เชื่อมต่อ'};
+            this.isDialogShow = true;
+            return -1;
+          }
+          this.$router.replace("/");
         }
       }
     },
@@ -376,6 +434,10 @@ export default {
       console.log("-> Log in : Operating>sockets>Speed_C");
       console.log(data);
       this.speed = data;
+    },
+    NOTIFY_C_CLIENT_TO_CANCEL_WORK:function(data){
+      this.$socket.emit('NOTIFY_C_CLIENT_TO_CANCEL_WORK_RESPONSE',data);
+      this.$router.replace("/");
     },
   },
 };

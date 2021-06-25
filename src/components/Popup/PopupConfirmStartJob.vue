@@ -79,13 +79,14 @@ export default {
   methods: {
     async startWork() {
       this.overlay = true;  
-      var result = await API.processes.checkNCClientConnect();
+      var result = await API.processes.notifyNCClientToStartWork(this.group);
       this.overlay = false;
       if(!result.successful){
         this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';
         this.isDialogShow = true;
         return -1;
       }
+
       this.$emit('popup-confirm-start-job', {str:'yes',group:this.group});
       
     }

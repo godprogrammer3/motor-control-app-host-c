@@ -36,6 +36,17 @@
                 })
             "
           ></PopupConfirmStartJob>
+            <PopupConfirmCancelJob
+            v-else-if="type.str == 'cancelJob'"
+            :group="type.value"
+            @popup-confirm-start-job="
+              (event) =>
+                $emit('popup-comfirm-event', {
+                  type: 'confirm-cancel-job',
+                  value: event,
+                })
+            "
+          ></PopupConfirmCancelJob>
         </v-row>
       </v-container>
     </v-card>
@@ -46,11 +57,13 @@
 import PopupConfirmChangePaper from "./PopupConfirmChangePaper";
 import PopupChangingPaper from "./PopupChangingPaper";
 import PopupConfirmStartJob from "./PopupConfirmStartJob.vue";
+import PopupConfirmCancelJob from './PopupConfirmCancelJob.vue';
 export default {
   components: {
     PopupConfirmChangePaper,
     PopupChangingPaper,
-    PopupConfirmStartJob
+    PopupConfirmStartJob,
+    PopupConfirmCancelJob
   },
   props: {
     type: {

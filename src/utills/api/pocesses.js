@@ -14,3 +14,27 @@ export async function checkNCClientConnect(){
         return result;
       }
 } 
+
+export async function notifyNCClientToStartWork(group){
+  var result;
+  try{
+    result = await instance.post("/notify-nc-client-to-start-work",group);
+    result = result.data;
+  }catch(error){
+    result = error.response.data;
+  }finally{
+    return result;
+  }
+} 
+
+export async function notifyNCClientToCancelWork(){
+  var result;
+  try{
+    result = await instance.get("/notify-nc-client-to-cancel-work");
+    result = result.data;
+  }catch(error){
+    result = error.response.data;
+  }finally{
+    return result;
+  }
+} 
