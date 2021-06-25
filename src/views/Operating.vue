@@ -2,13 +2,13 @@
   <div>
     <v-app-bar color="indigo darken-4" style="height:70px" flat>
       <span class="white--text text-h4 mr-5"
-        >กลุ่มหมายเลข {{ group.group_id }}</span
+        >กลุ่มหมายเลข {{ group.id }}</span
       >
       <v-toolbar-title class="white--text text-h4"
         >กำลังดำเนินงาน...</v-toolbar-title
       >
       <span class="white--text text-h4 ml-5"
-        >({{ currentJobOrder + 1 }}/{{ group.job.length }} งาน)</span
+        >({{ currentJobOrder + 1 }}/{{ group.jobs.length }} งาน)</span
       >
     </v-app-bar>
     <v-container fluid class="pa-0">
@@ -21,25 +21,25 @@
         <v-col align="center" justify="center"
           ><span class="indigo--text text-h5">หมายเลขงาน :</span
           ><span class="text-h5 ml-2">{{
-            group.job[currentJobOrder].job_id
+            group.jobs[currentJobOrder].id
           }}</span></v-col
         >
         <v-col align="center" justify="center"
           ><span class="indigo--text text-h5">หน้ากว้าง :</span
           ><span class="text-h5 ml-2">
-            {{ group.job[currentJobOrder].width }} นิ้ว</span
+            {{ group.jobs[currentJobOrder].width }} นิ้ว</span
           ></v-col
         >
         <v-col align="center" justify="center"
           ><span class="indigo--text text-h5">ความยาวแผ่น :</span
           ><span class="text-h5 ml-2"
-            >{{ group.job[currentJobOrder].height }} มม.</span
+            >{{ group.jobs[currentJobOrder].height }} มม.</span
           ></v-col
         >
         <v-col align="center" justify="center"
           ><span class="indigo--text text-h5">จำนวนแผ่น :</span
           ><span class="text-h5 ml-2"
-            >{{ group.job[currentJobOrder].sheet }} แผ่น</span
+            >{{ group.jobs[currentJobOrder].sheet }} แผ่น</span
           ></v-col
         >
         <v-col align="center" justify="center"
@@ -47,8 +47,8 @@
           ><span class="text-h5 ml-2"
             >{{
               (
-                (group.job[currentJobOrder].sheet *
-                  group.job[currentJobOrder].height) /
+                (group.jobs[currentJobOrder].sheet *
+                  group.jobs[currentJobOrder].height) /
                 1000
               ).toFixed(2)
             }}
@@ -57,7 +57,7 @@
         >
       </v-row>
       <v-row align="center" justify="center" class="mt-5">
-        <span class="text-h2 indigo--text">งานเสร็จสิ้น :</span>
+        <span class="text-h2 indigo--text">ลอน C จ่ายกระดาษแล้ว :</span>
         <span class="text-h2 ml-5">5.65 %</span>
       </v-row>
       <v-container>
@@ -65,7 +65,7 @@
           <v-col>
             <v-card color="green" class="text-h4 white--text">
               <v-col align="center" justify="center">
-                <v-row align="center" justify="center">เสร็จสิ้น</v-row>
+                <v-row align="center" justify="center">จ่ายแล้ว</v-row>
                 <v-row align="center" justify="center">{{
                   finishLength.toFixed(2)
                 }}</v-row>
@@ -93,7 +93,7 @@
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col>
+          <v-col style="visibility:hidden;">
             <v-card color="red" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">ความเร็ว</v-row>
@@ -104,7 +104,19 @@
               </v-col>
             </v-card>
           </v-col>
-          <v-col>
+
+           <v-col>
+            <v-card color="blue" class="text-h4 white--text">
+              <v-col align="center" justify="center">
+                <v-row align="center" justify="center">เพิ่ม/ลด</v-row>
+                <v-row align="center" justify="center">+100</v-row>
+                <v-row align="center" justify="center"
+                  ><span class="mr-5">แผ่น</span>
+                </v-row>
+              </v-col>
+            </v-card>
+          </v-col>
+          <v-col style="visibility:hidden;">
             <v-card
               color="orange"
               class="text-h4 white--text"
@@ -122,21 +134,11 @@
               </v-col>
             </v-card>
           </v-col>
-          <v-col>
-            <v-card color="blue" class="text-h4 white--text">
-              <v-col align="center" justify="center">
-                <v-row align="center" justify="center">เพิ่ม/ลด</v-row>
-                <v-row align="center" justify="center">+100</v-row>
-                <v-row align="center" justify="center"
-                  ><span class="mr-5">แผ่น</span>
-                </v-row>
-              </v-col>
-            </v-card>
-          </v-col>
+         
         </v-row>
       </v-container>
       <footer
-        v-if="currentJobOrder + 1 < group.job.length"
+        v-if="currentJobOrder + 1 < group.jobs.length"
         class="elevation-2 pl-10"
         fixed
         absolute
@@ -148,25 +150,25 @@
           <v-col align="center" justify="center"
             ><span class="indigo--text text-h5">หมายเลขงาน :</span
             ><span class="text-h5 ml-2">{{
-              group.job[currentJobOrder + 1].job_id
+              group.jobs[currentJobOrder + 1].id
             }}</span></v-col
           >
           <v-col align="center" justify="center"
             ><span class="indigo--text text-h5">หน้ากว้าง :</span
             ><span class="text-h5 ml-2"
-              >{{ group.job[currentJobOrder + 1].width }} นิ้ว</span
+              >{{ group.jobs[currentJobOrder + 1].width }} นิ้ว</span
             ></v-col
           >
           <v-col align="center" justify="center"
             ><span class="indigo--text text-h5">ความยาวแผ่น :</span
             ><span class="text-h5 ml-2"
-              >{{ group.job[currentJobOrder + 1].height }} มม.</span
+              >{{ group.jobs[currentJobOrder + 1].height }} มม.</span
             ></v-col
           >
           <v-col align="center" justify="center"
             ><span class="indigo--text text-h5">จำนวนแผ่น :</span
             ><span class="text-h5 ml-2"
-              >{{ group.job[currentJobOrder + 1].sheet }} แผ่น</span
+              >{{ group.jobs[currentJobOrder + 1].sheet }} แผ่น</span
             ></v-col
           >
           <v-col align="center" justify="center"
@@ -174,8 +176,8 @@
             ><span class="text-h5 ml-2"
               >{{
                 (
-                  (group.job[currentJobOrder + 1].sheet *
-                    group.job[currentJobOrder + 1].height) /
+                  (group.jobs[currentJobOrder + 1].sheet *
+                    group.jobs[currentJobOrder + 1].height) /
                   1000
                 ).toFixed(2)
               }}
@@ -195,14 +197,14 @@
             >
               <template v-slot:label>
                 <span :class="isAutoMode ? 'green--text' : 'orange--text'">{{
-                  isAutoMode ? "โหมดอัตโนมัติ" : "โหมดแมนนวล"
+                  isAutoMode ? "ซิงค์ความเร็ว" : "ไม่ซิงค์ความเร็ว"
                 }}</span>
                 <v-icon
-                  style="margin-left:5px;transform:scale(1.2);"
+                  style="margin-left:5px;transform:scale(1.1);"
                   x-large
                   :color="isAutoMode ? 'green' : 'orange'"
                 >
-                  {{ isAutoMode ? "computer" : "person" }}
+                  {{ isAutoMode ? "sync" : "sync_disabled" }}
                 </v-icon>
               </template>
             </v-switch>
@@ -235,7 +237,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import Popup from "@/components/Popup.vue";
+import Popup from "@/components/Popup/Popup.vue";
 import API from "@/store/api";
 export default {
   components: {
@@ -353,11 +355,6 @@ export default {
     },
   },
   mounted() {
-    console.log("-> This is in Operating > mounted");
-    console.log(this.group);
-    this.dialogType = "addWastPaper";
-    this.dialogValue = null;
-    this.isDialogShow = true;
   },
   sockets: {
     connect: function() {

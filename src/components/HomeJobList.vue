@@ -22,12 +22,22 @@
           <v-list-item v-for="(item, index) in items" :key="index">
             <v-card width="100%" class="mb-5 rounded-xl">
               <v-toolbar
-                :color="item.is_continue ? 'indigo' : 'orange'"
+                :color="item.isContinue ? 'indigo' : 'orange'"
                 height="95"
               >
                 <v-toolbar-title class="text-h5 white--text ml-5 nocopy"
-                  >กลุ่มหมายเลข {{ item.group_id }}</v-toolbar-title
+                  >กลุ่มหมายเลข {{ item.id }}</v-toolbar-title
                 >
+                <v-spacer></v-spacer>
+                <v-btn
+                  v-if="isJobRunning != true"
+                  fab
+                  dark
+                  color="green"
+                  @click="startJob(item)"
+                >
+                  <v-icon dark large>play_arrow</v-icon>
+                </v-btn>
               </v-toolbar>
               <v-container fluid fill-height>
                 <v-row align="center" justify="center">
@@ -36,17 +46,17 @@
                       <template v-slot:default>
                         <tbody>
                           <tr
-                            v-for="(sub_item, sub_index) in item.job"
+                            v-for="(sub_item, sub_index) in item.jobs"
                             :key="sub_index"
                           >
                           <v-row align="center" justify="center" style="width:90vw;">
                             <v-col align="center" justify="center"><span>{{ sub_index + 1 }}</span></v-col>
-                            <v-col align="center" justify="center"><span>{{ sub_item.job_id }}</span></v-col>
+                            <v-col align="center" justify="center"><span>{{ sub_item.id }}</span></v-col>
                             <v-col align="center" justify="center"><span>{{ sub_item.width}}</span></v-col>
                             <v-col align="center" justify="center"><span>{{ sub_item.height}}</span></v-col>
                             <v-col align="center" justify="center"><span> {{ sub_item.sheet}}</span></v-col>
                             <v-col align="center" justify="center"><span>{{ sub_item.height * sub_item.sheet / 100.0}}</span></v-col>
-                            <v-col align="center" justify="center"><span> {{ parseDateFromDB(sub_item.work_date) }}</span></v-col>
+                            <v-col align="center" justify="center"><span> {{ parseDateFromDB(sub_item.workDate) }}</span></v-col>
                           </v-row>
                           </tr>
                         </tbody>
@@ -94,7 +104,8 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import draggable from "vuedraggable";
-import Popup from "@/components/Popup.vue";
+import Popup from "@/components/Popup/Popup.vue";
+import * as API from "../utills/api";
 export default {
   name: "HomeJobList",
   props: {
@@ -117,9 +128,8 @@ export default {
       items:[]
     };
   },
-  mounted() {
-    this.overlay = true;
-    this.getAllJobByAllGroup().then(()=>{this.items = this.getAllJobByAllGroupData ,this.overlay = false;});
+  created() {
+   this.fetchData();
   },
   methods: {
     ...mapActions(['getAllJobByAllGroup']),
@@ -134,7 +144,18 @@ export default {
           this.dialogValue = { str:'changingPaper' };
           this.isDialogShow = true;
         }
-      } 
+      }else if (event.type == "confirm-start-job") {
+        if (event.value.str == "cancel") {
+          this.isDialogShow = false;
+        } else if (event.value.str == "yes") {
+          this.$router.replace({
+            name: "Operating",
+            params: {
+              group: event.value.group,
+            },
+          });
+        }
+      }
     },
     confirmChangePaper(){
       this.dialogType = 'confirm';
@@ -154,6 +175,32 @@ export default {
     parseDateFromDB(date){
       var date = new Date(date);
       return date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+    },
+    fetchData(){
+      this.overlay = true;
+      API.groups.listWithJobs({
+        orderBy:'order',
+        direction:'ASC'
+      }).then((response) => {
+        this.overlay = false;
+        if (response.successful) {
+          if (response.data.length) {
+            this.isNotHasData = false;
+            this.items = response.data;
+          } else {
+            this.isNotHasData = true;
+          }
+        }else{
+          this.dialogType = 'error';
+          this.dialogValue = { errorMessage: 'กรุณาลองอีกครั้ง'};
+          this.isDialogShow = true;
+        }
+      });
+    },
+    startJob(group) {
+      this.dialogType = "confirm";
+      this.dialogValue = { str: "startJob", group: group };
+      this.isDialogShow = true;
     },
   },
   computed: {
