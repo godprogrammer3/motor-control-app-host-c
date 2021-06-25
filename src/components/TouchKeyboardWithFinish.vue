@@ -53,7 +53,7 @@
           class="text-h1 px-6"
           style=" height: auto ;
   width: auto ;"
-        @click="$emit('keyboard-event', { type: 'letter', value: '6' })"
+          @click="$emit('keyboard-event', { type: 'letter', value: '6' })"
           >6</v-btn
         >
       </v-col></v-row
@@ -134,7 +134,7 @@
           height="7vh"
           style="height:auto; width:auto;"
           @click="$emit('keyboard-event', { type: 'action', value: 'finish' })"
-          >เสร็จสิ้น</v-btn
+          >ดำเนินการต่อ</v-btn
         ></v-col
       >
     </v-row>

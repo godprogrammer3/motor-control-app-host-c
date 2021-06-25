@@ -14,7 +14,11 @@
       class="align-center"
       @popup-add-wast-paper-event="
         (event) =>
-          $emit('popup-event', { type: event.type, value: event.value ,extraValue:event.extraValue})
+          $emit('popup-event', {
+            type: event.type,
+            value: event.value,
+            extraValue: event.extraValue,
+          })
       "
     >
     </PopupAddWastPaper>
@@ -27,6 +31,29 @@
       "
     >
     </PopupChangingPaper>
+    <PopupEditOnTop
+      v-else-if="type == 'editOnTop'"
+      :oldOnTop="value.onTop.toString()"
+      @popup-edit-on-top-event="
+        (event) =>
+          $emit('popup-event', {
+            type: event.type,
+            value: event.value,
+            extraValue: event.extraValue,
+          })
+      "
+    ></PopupEditOnTop>
+    <PopupEditOntopComplete
+      v-else-if="type == 'editOntopComplete'"
+      class="align-center"
+      :value="value.value"
+      @popup-edit-offset-complete-event="
+        (event) => {
+          $emit('popup-event', { type: event.type, value: event.value });
+        }
+      "
+    >
+    </PopupEditOntopComplete>
   </div>
 </template>
 
@@ -34,11 +61,15 @@
 import PopupConfirm from "./PopupConfirm";
 import PopupAddWastPaper from "./PopupAddWastPaper";
 import PopupChangingPaper from "./PopupChangingPaper";
+import PopupEditOnTop from "./PopupEditOnTop";
+import PopupEditOntopComplete from "./PopupEditOntopComplete";
 export default {
   components: {
     PopupConfirm,
     PopupAddWastPaper,
-    PopupChangingPaper
+    PopupChangingPaper,
+    PopupEditOnTop,
+    PopupEditOntopComplete,
   },
   mounted() {},
   props: {
@@ -48,7 +79,7 @@ export default {
     },
     value: {
       type: Object,
-      default: ()=>{},
+      default: () => {},
     },
   },
 };
