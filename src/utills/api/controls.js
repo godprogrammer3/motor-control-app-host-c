@@ -1,9 +1,9 @@
 import axios from "axios";
-import { environtment } from "../../config/environment";
 var instance = axios.create({
-    baseURL: environtment.API_HOST+"/control",
+    baseURL: "http://192.168.43.49:3000/control",
     adapter: require("axios/lib/adapters/http"),
     });
+
 export async function startWork(id){
       var result;
       try{
@@ -16,6 +16,54 @@ export async function startWork(id){
         response.data = error?.response?.data;
         return response;
       }
+} 
+
+export async function addWasteBySheet(sheets){
+  var result;
+  try{
+    result = await instance.post("/addWastePaperSheet",{
+      sheets:sheets
+    });
+    const response = responseSuccess;
+    responseSuccess.data = result;
+    return response;
+  }catch(error){
+    const response = responseFailed;
+    response.data = error?.response?.data;
+    return response;
+  }
+} 
+
+export async function addWasteByLenght(lenght){
+  var result;
+  try{
+    result = await instance.post("/addWastePaperLenght",{
+      lenght:lenght
+    });
+    const response = responseSuccess;
+    responseSuccess.data = result;
+    return response;
+  }catch(error){
+    const response = responseFailed;
+    response.data = error?.response?.data;
+    return response;
+  }
+} 
+
+export async function addPaperSheet(sheets){
+  var result;
+  try{
+    result = await instance.post("/addPaperSheet",{
+      sheets:sheets
+    });
+    const response = responseSuccess;
+    responseSuccess.data = result;
+    return response;
+  }catch(error){
+    const response = responseFailed;
+    response.data = error?.response?.data;
+    return response;
+  }
 } 
 
 const responseSuccess = {

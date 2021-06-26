@@ -57,7 +57,7 @@
 import TouchKeyboardWithFinish from "./TouchKeyboardWithFinish";
 import PopupConfirmAddWastPaper from "./PopupConfirmAddWastPaper";
 import PopupConfirmAddWastPaperComplete from "./PopupAddWastPaperComplete";
-import API from "@/store/api";
+import * as API from "../../utills/api";
 export default {
   components: {
     TouchKeyboardWithFinish,
@@ -72,7 +72,6 @@ export default {
       currentInput: "",
       isDialogShow: false,
       dialogType: "",
-      api: new API(),
     };
   },
   methods: {
@@ -127,6 +126,7 @@ export default {
           if (this.$refs.form.validate()) {
             this.dialogType = "confirmAddWastPaper";
             this.isDialogShow = true;
+
           }
         } else if (event.value == "finish") {
           this.$emit("popup-add-wast-paper-event", {
@@ -181,7 +181,7 @@ export default {
       print(event);
       if (event == "confirm") {
         this.isDialogShow = false;
-        this.api.addWasteInitial(this.wast);
+       
         this.dialogType = "confirmAddWastPaperComplete";
         this.isDialogShow = true;
       } else {

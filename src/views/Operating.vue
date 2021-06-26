@@ -120,7 +120,7 @@
             <v-card color="blue" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">เพิ่ม/ลด</v-row>
-                <v-row align="center" justify="center">+100</v-row>
+                <v-row align="center" justify="center">{{offset}}</v-row>
                 <v-row align="center" justify="center"
                   ><span class="mr-5">แผ่น</span>
                 </v-row>
@@ -306,7 +306,7 @@ export default {
       dialogType: "",
       dialogValue: "",
       onTop: 30,
-      offset: 100,
+      offset: 0,
       isShowHomePopup: false,
       isPersistent: true,
       currentJobOrder: 0,
@@ -336,13 +336,11 @@ export default {
           this.isDialogShow = false;
           this.dialogValue = {};
         } else if (event.value == "confirm") {
-          this.api.changePaper();
           this.isDialogShow = false;
           this.dialogType = "changingPaper";
           this.dialogValue = {};
           this.isDialogShow = true;
         } else if (event.value == "finish") {
-          this.api.finishChangePaper();
           this.isDialogShow = false;
           this.dialogValue = {};
         } else if (event.value == "saveOntop") {
@@ -431,6 +429,13 @@ export default {
     },
     Lenght_C: function( data ){
       this.finishLength = data;
+    },
+     wastePaper_sheet:function( data ){
+      console.log(data);
+      this.offset = data;
+    },
+     end:function(data){
+      this.currentJobOrder++;
     }
   },
 };
