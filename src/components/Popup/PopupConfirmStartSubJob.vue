@@ -21,7 +21,7 @@
         class="text-h4 white--text"
         style="height:auto;width:auto;"
         color="grey"
-        @click="$emit('popup-confirm-start-job', {str:'cancel',job:job})"
+        @click="$emit('popup-confirm-start-sub-job', {str:'cancel',job:job})"
       >
         ยกเลิก
       </v-btn>
@@ -78,16 +78,10 @@ export default {
   },
   methods: {
     async startWork() {
-      this.overlay = true;  
-      var result = await API.processes.notifyNCClientToStartWork(this.job);
-      this.overlay = false;
-      if(!result.successful){
-        this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';
-        this.isDialogShow = true;
-        return -1;
-      }
-
-      this.$emit('popup-confirm-start-job', {str:'yes',group:this.job});
+      //this.overlay = true;  
+      
+    
+      this.$emit('popup-confirm-start-sub-job', {str:'yes',job:this.job});
       
     }
   },

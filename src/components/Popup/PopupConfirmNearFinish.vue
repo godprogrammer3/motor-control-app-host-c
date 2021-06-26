@@ -11,7 +11,7 @@
         class="text-h4 white--text"
         style="height:auto;width:auto;"
         color="grey"
-        @click="$emit('popup-confirm-start-job', {str:'cancel',group:group})"
+        @click="$emit('popup-confirm-near-finish', {str:'cancel',group:group})"
       >
         ตกลง
       </v-btn>

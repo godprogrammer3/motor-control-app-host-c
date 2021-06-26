@@ -80,12 +80,20 @@ export default {
     async startWork() {
       this.overlay = true;  
       var result = await API.processes.notifyNCClientToStartWork(this.group);
+   
+      if(!result.successful){
+        this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';
+        this.isDialogShow = true;
+        return -1;
+      }
+      result = await API.controls.startWork(this.group.id);
       this.overlay = false;
       if(!result.successful){
         this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';
         this.isDialogShow = true;
         return -1;
       }
+
 
       this.$emit('popup-confirm-start-job', {str:'yes',group:this.group});
       

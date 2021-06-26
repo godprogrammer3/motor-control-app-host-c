@@ -69,7 +69,7 @@
       </v-row>
       <v-row align="center" justify="center" class="mt-5">
         <span class="text-h2 indigo--text">ลอน C จ่ายกระดาษแล้ว :</span>
-        <span class="text-h2 ml-5">5.65 %</span>
+        <span class="text-h2 ml-5">{{( targetLength != 0?finishLength / targetLength:0).toFixed(2)}} %</span>
       </v-row>
       <v-container>
         <v-row align="center" justify="center">
@@ -88,7 +88,7 @@
             <v-card color="indigo darken-4" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">คงเหลือ</v-row>
-                <v-row align="center" justify="center">2659</v-row>
+                <v-row align="center" justify="center">{{targetLength-finishLength}}</v-row>
                 <v-row align="center" justify="center">เมตร</v-row>
               </v-col>
             </v-card>
@@ -97,7 +97,7 @@
             <v-card color="purple" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">ทั้งหมด</v-row>
-                <v-row align="center" justify="center">3348</v-row>
+                <v-row align="center" justify="center">{{targetLength}}</v-row>
                 <v-row align="center" justify="center">เมตร</v-row>
               </v-col>
             </v-card>
@@ -201,13 +201,13 @@
         <v-col justify="center" style="width:100%;">
           <v-row align="center" justify="center">
             <v-switch
-              style="transform:scale(1.3);"
+              style="transform:scale(1.1);"
               v-model="isSlowMode"
               inset
               color="green"
             >
               <template v-slot:label>
-                <span :class="isAutoMode ? 'green--text' : 'orange--text'">{{
+                <span :class="isSlowMode ? 'green--text' : 'orange--text'">{{
                   isSlowMode ? "โหมดช้า" : "โหมดเร็ว"
                 }}</span>
                 <v-icon
@@ -215,7 +215,7 @@
                   x-large
                   :color="isSlowMode ? 'green' : 'orange'"
                 >
-                  {{ isSlowMode ? "sync" : "sync_disabled" }}
+                  {{ isSlowMode ? "speed" : "speed" }}
                 </v-icon>
               </template>
             </v-switch>
@@ -225,7 +225,7 @@
         <v-col justify="center" style="width:100%;">
           <v-row align="center" justify="center">
             <v-switch
-              style="transform:scale(1.3);"
+              style="transform:scale(1.1);"
               v-model="isAutoMode"
               inset
               color="green"
@@ -311,6 +311,7 @@ export default {
       isPersistent: true,
       currentJobOrder: 0,
       finishLength: 0.0,
+      targetLength:0,
       overlay:false
     };
   },
@@ -369,6 +370,8 @@ export default {
           }
           this.$router.replace("/");
         }
+      }else if(event.type == "confirm-start-sub-job"){
+        this.isDialogShow = false;
       }
     },
     confirmChangePaper() {
@@ -413,32 +416,22 @@ export default {
     },
   },
   mounted() {
+
   },
   sockets: {
     connect: function() {
       console.log("socket connected");
     },
-    CANCEL_JOB: function(data) {
-      console.log(data);
-      this.$router.replace({ path: "/" }).catch((error) => {
-        console.log("->In operating page:");
-        console.log(error);
-      });
-    },
-    Lenght_A: function(data) {
-      console.log("-> Log in : Operating>sockets>Lenght_A");
-      console.log(data);
-      this.finishLength = data;
-    },
-    Speed_C: function(data) {
-      console.log("-> Log in : Operating>sockets>Speed_C");
-      console.log(data);
-      this.speed = data;
-    },
     NOTIFY_C_CLIENT_TO_CANCEL_WORK:function(data){
       this.$socket.emit('NOTIFY_C_CLIENT_TO_CANCEL_WORK_RESPONSE',data);
       this.$router.replace("/");
     },
+    Lenght_target: function( data ){
+     this.targetLength = data;
+    },
+    Lenght_C: function( data ){
+      this.finishLength = data;
+    }
   },
 };
 </script>

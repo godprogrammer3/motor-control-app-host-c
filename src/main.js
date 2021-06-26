@@ -5,11 +5,12 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueSocketIO from "vue-socket.io";
 import VueDragscroll from "vue-dragscroll";
+import {environment} from "./config/environment";
 Vue.config.productionTip = false;
 Vue.use(
   new VueSocketIO({
     debug: false,
-    connection: "http://localhost:3000",
+    connection: environment.SOCKET_IO_HOST,
   })
 );
 // import VueDraggable from "vue-draggable";

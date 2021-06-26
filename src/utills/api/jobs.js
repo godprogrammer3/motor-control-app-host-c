@@ -1,6 +1,6 @@
 import axios from "axios";
 var instance = axios.create({
-    baseURL: "http://localhost:3000/jobs",
+    baseURL: "http://192.168.43.49:3000/jobs",
     adapter: require("axios/lib/adapters/http"),
     });
 export async function create(job){
