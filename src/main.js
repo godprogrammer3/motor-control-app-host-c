@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 Vue.use(
   new VueSocketIO({
     debug: false,
-    connection: "http://192.168.43.49:3000",
+    connection: process.env.VUE_APP_SOCKET_IO_HOST,
   })
 );
 // import VueDraggable from "vue-draggable";

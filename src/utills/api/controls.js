@@ -1,6 +1,6 @@
 import axios from "axios";
 var instance = axios.create({
-    baseURL: "http://192.168.1.4:3000/control",
+    baseURL: process.env.VUE_APP_API_HOST+"/control",
     adapter: require("axios/lib/adapters/http"),
     });
 

@@ -217,18 +217,14 @@ export default {
     connect: function() {
       console.log("socket connected");
     },
-    CHECK_HOST_C: function(data) {
-      console.log('Requested host c check at',data);
-      this.$socket.emit('CHECK_HOST_C_RESPONSE',data);
+    connect: function() {
+      console.log("socket connected");
     },
-    START_WORK:function(data){
-      console.log('->This in HomJobList>Scockets>START_WORK:');
-      console.log('Start work from server',data);
-      this.$router.replace({name:'Operating',params:{
-            group:data
-          }});
+    NOTIFY_C_CLIENT_TO_REFRESH_JOB_LIST:function(data){
+      this.$socket.emit('NOTIFY_C_CLIENT_TO_REFRESH_JOB_LIST_RESPONSE',data);
+      this.fetchData();
     }
-  },
+  }
 };
 </script>
 <style scoped>

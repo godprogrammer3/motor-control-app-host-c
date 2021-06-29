@@ -1,6 +1,6 @@
 import axios from "axios";
 var instance = axios.create({
-    baseURL: "http://192.168.1.4:3000/processes",
+    baseURL: process.env.VUE_APP_API_HOST+"/processes",
     adapter: require("axios/lib/adapters/http"),
     });
 export async function checkNCClientConnect(){

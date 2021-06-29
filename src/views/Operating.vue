@@ -434,8 +434,10 @@ export default {
       console.log(data);
       this.offset = data;
     },
-     end:function(data){
-      this.currentJobOrder++;
+    end:function(data){
+       if(this.currentJobOrder + 1  < this.group.jobs.length){
+         this.currentJobOrder++;
+       }
     }
   },
 };

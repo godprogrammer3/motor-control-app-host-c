@@ -1,6 +1,6 @@
 import axios from "axios";
 var instance = axios.create({
-    baseURL: "http://192.168.1.4:3000/jobs",
+    baseURL: process.env.VUE_APP_API_HOST+"/jobs",
     adapter: require("axios/lib/adapters/http"),
     });
 export async function create(job){
