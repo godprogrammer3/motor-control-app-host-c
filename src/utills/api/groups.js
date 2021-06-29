@@ -57,3 +57,15 @@ export async function updateJobsInGroup(data){
     return result;
   }
 } 
+
+export async function getWithJobs(id){
+  var result;
+  try{
+    result = await instance.get("/get-with-jobs/"+id,);
+    result = result.data;
+  }catch(error){
+    result = error.response.data;
+  }finally{
+    return result;
+  }
+} 

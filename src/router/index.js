@@ -14,9 +14,6 @@ const routes = [
     path: "/operating",
     name: "Operating",
     component: Operating,
-    props: (route) => ({
-      ...route.params,
-    }),
   },
 ];
 

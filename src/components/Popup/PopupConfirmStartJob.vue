@@ -79,14 +79,14 @@ export default {
   methods: {
     async startWork() {
       this.overlay = true;  
-      var result = await API.processes.notifyNCClientToStartWork(this.group);
-   
-      if(!result.successful){
-        this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';
+      result = await API.controls.startWork(this.group.id);
+      if(!result.successful && 0){
+        this.overlay = false;
+        this.errorMessage = 'กล่อง control ไม่ได้เชื่อมต่อ';
         this.isDialogShow = true;
         return -1;
-      }
-      result = await API.controls.startWork(this.group.id);
+      } 
+      var result = await API.processes.notifyNCClientToStartWork(this.group);
       this.overlay = false;
       if(!result.successful){
         this.errorMessage = 'เครื่อง C ไม่ได้เชื่อมต่อ';

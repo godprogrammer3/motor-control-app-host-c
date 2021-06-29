@@ -312,7 +312,8 @@ export default {
       currentJobOrder: 0,
       finishLength: 0.0,
       targetLength:0,
-      overlay:false
+      overlay:false,
+      group:{}
     };
   },
   methods: {
@@ -399,6 +400,19 @@ export default {
       this.isDialogShow = true;
     },
     ...mapActions(["processWork", "stopWork"]),
+    fetchData(){
+      this.overlay = true;
+      API.groups.getWithJobs(this.$route.query.id).then((response) => {
+        this.overlay = false;
+        if (response.successful) {
+          this.group = response.data;
+        }else{
+          this.dialogType = 'error';
+          this.dialogValue = { errorMessage: 'กรุณาลองอีกครั้ง'};
+          this.isDialogShow = true;
+        }
+      });
+    }
   },
   watch: {
     isEditDialogShow(newValue, oldValue) {
@@ -407,14 +421,8 @@ export default {
       }
     },
   },
-  props: {
-    group: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  mounted() {
-
+  created () {
+    this.fetchData();
   },
   sockets: {
     connect: function() {

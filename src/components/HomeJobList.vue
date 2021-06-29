@@ -150,8 +150,8 @@ export default {
         } else if (event.value.str == "yes") {
           this.$router.replace({
             name: "Operating",
-            params: {
-              group: event.value.group,
+            query: {
+              id: event.value.group.id,
             },
           });
         }

@@ -13,6 +13,15 @@ export default {
   data: () => ({
     //
   }),
+   sockets: {
+    connect: function() {
+      console.log("socket connected");
+    },
+    NOTIFY_C_CLIENT_TO_CANCEL_WORK:function(data){
+      this.$socket.emit('NOTIFY_C_CLIENT_TO_CANCEL_WORK_RESPONSE',data);
+      this.$router.replace("/");
+    },
+  },
 };
 </script>
 <style lang="sass">
