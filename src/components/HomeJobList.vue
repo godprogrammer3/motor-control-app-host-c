@@ -12,7 +12,7 @@
     <v-row justify="center" align="center">
       <v-list
         class="mt-3 list-class"
-        style="height:75vh;"
+        style="height:70vh;"
       >
         <draggable
           v-model="items"
@@ -108,12 +108,6 @@ import Popup from "@/components/Popup/Popup.vue";
 import * as API from "../utills/api";
 export default {
   name: "HomeJobList",
-  props: {
-    isJobRunning: {
-      type: Boolean,
-      default: false,
-    },
-  },
   components: {
     draggable,
     Popup,

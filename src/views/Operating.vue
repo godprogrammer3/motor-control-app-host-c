@@ -201,7 +201,6 @@
         <v-col justify="center" style="width:100%;">
           <v-row align="center" justify="center">
             <v-switch
-              style="transform:scale(1.1);"
               v-model="isSlowMode"
               inset
               color="green"
@@ -211,7 +210,7 @@
                   isSlowMode ? "โหมดช้า" : "โหมดเร็ว"
                 }}</span>
                 <v-icon
-                  style="margin-left:5px;transform:scale(1.1);"
+                  style="margin-left:5px;"
                   x-large
                   :color="isSlowMode ? 'green' : 'orange'"
                 >
@@ -225,7 +224,6 @@
         <v-col justify="center" style="width:100%;">
           <v-row align="center" justify="center">
             <v-switch
-              style="transform:scale(1.1);"
               v-model="isAutoMode"
               inset
               color="green"
@@ -235,7 +233,7 @@
                   isAutoMode ? "ซิงค์ความเร็ว" : "ไม่ซิงค์ความเร็ว"
                 }}</span>
                 <v-icon
-                  style="margin-left:5px;transform:scale(1.1);"
+                  style="margin-left:5px;"
                   x-large
                   :color="isAutoMode ? 'green' : 'orange'"
                 >
