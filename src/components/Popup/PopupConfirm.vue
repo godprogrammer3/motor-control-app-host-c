@@ -60,6 +60,16 @@
           >
 
           </PopupConfirmStartSubJob>
+          <PopupConfirmShutdown
+            v-else-if="type.str == 'confirmShutdown'"
+            @popup-confirm-shutdown="
+              (event) =>
+                $emit('popup-comfirm-event', {
+                  type: 'confirm-shutdown',
+                  value: event,
+                })
+            "
+          ></PopupConfirmShutdown>
         </v-row>
       </v-container>
     </v-card>
@@ -72,13 +82,15 @@ import PopupChangingPaper from "./PopupChangingPaper";
 import PopupConfirmStartJob from "./PopupConfirmStartJob.vue";
 import PopupConfirmCancelJob from './PopupConfirmCancelJob.vue';
 import PopupConfirmStartSubJob from './PopupConfirmStartSubJob.vue';
+import PopupConfirmShutdown from './PopupConfirmShutdown.vue';
 export default {
   components: {
     PopupConfirmChangePaper,
     PopupChangingPaper,
     PopupConfirmStartJob,
     PopupConfirmCancelJob,
-    PopupConfirmStartSubJob
+    PopupConfirmStartSubJob,
+    PopupConfirmShutdown
   },
   props: {
     type: {
