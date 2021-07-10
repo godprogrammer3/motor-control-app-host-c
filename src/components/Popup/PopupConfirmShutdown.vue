@@ -92,7 +92,14 @@ export default {
     },
     async shutdown(){
       console.log('This line in shutdown()');
-      API.apps.shutdown();
+      this.overlay = true;
+      const result = API.apps.shutdown();
+      this.overlay = false;
+      if(!result.successful){
+         this.errorMessage = 'กรุณาลองอีกครั้ง';
+         this.isDialogShow = true;
+        return -1;
+      }
     }
   },
 };

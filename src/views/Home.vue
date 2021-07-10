@@ -99,19 +99,6 @@ export default {
     dateUpdate() {
       this.datenow = moment().format("DD/M/YYYY");
     },
-    showDialog(data) {
-      this.isDialogShow = true;
-      this.dialogInfo = data;
-      if (this.dialogInfo.type === "edit") {
-        this.workNo = this.dialogInfo.item.workNo;
-        this.length = this.dialogInfo.item.length;
-        this.dialogInfo.item.oldWorkNo = this.dialogInfo.item.workNo;
-        this.date = this.dialogInfo.item.workDate;
-      } else {
-        this.workNo = this.dialogInfo.item.workNo;
-        this.length = this.dialogInfo.item.length;
-      }
-    },
     showConfirmShutdownPopup(){
       this.dialogType = 'confirm',
       this.dialogValue = { str:'confirmShutdown' };
