@@ -277,7 +277,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import Popup from "@/components/Popup/Popup.vue";
 import * as API from "../utills/api";
 export default {
@@ -397,7 +396,6 @@ export default {
       this.dialogValue = null;
       this.isDialogShow = true;
     },
-    ...mapActions(["processWork", "stopWork"]),
     fetchData(){
       this.overlay = true;
       API.groups.getWithJobs(this.$route.query.id).then((response) => {

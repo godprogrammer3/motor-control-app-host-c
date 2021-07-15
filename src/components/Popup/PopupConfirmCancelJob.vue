@@ -30,18 +30,12 @@
 </template>
 
 <script>
-import API from "@/store/api";
 export default {
   props: {
     group: {
       type: Object,
       default: ()=>{}
     },
-  },
-  data() {
-    return {
-      api: new API()
-    }
   },
   methods: {
     async cancelJob() {
