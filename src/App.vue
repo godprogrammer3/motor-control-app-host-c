@@ -10,9 +10,6 @@ export default {
 
   components: {},
 
-  data: () => ({
-    //
-  }),
    sockets: {
     connect: function() {
       console.log("socket connected");

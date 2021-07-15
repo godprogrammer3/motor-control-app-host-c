@@ -357,13 +357,13 @@ export default {
         } else if (event.value == "yes") {
           this.overlay = true;
           const result = await API.processes.notifyNCClientToCancelWork();
-           this.overlay = false;
-          if(!result.successful){
-            this.dialogType = 'error';
-            this.dialogValue = { errorMessage:'เครื่อง C ไม่ได้เชื่อมต่อ'};
-            this.isDialogShow = true;
-            return -1;
-          }
+          this.overlay = false;
+          // if(!result.successful){
+          //   this.dialogType = 'error';
+          //   this.dialogValue = { errorMessage:'เครื่อง C ไม่ได้เชื่อมต่อ'};
+          //   this.isDialogShow = true;
+          //   return -1;
+          // }
           this.$router.replace("/");
         }
       }else if(event.type == "confirm-start-sub-job"){
