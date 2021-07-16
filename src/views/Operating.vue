@@ -8,7 +8,7 @@
         >กำลังดำเนินงาน...</v-toolbar-title
       >
       <span class="white--text text-h4 ml-5"
-        >({{ currentJobOrder + 1 }}/{{ group.jobs.length }} งาน)</span
+        >({{ 'เหลือ '+group.jobs.length }} งาน)</span
       >
       <v-spacer></v-spacer>
       <v-btn
@@ -69,7 +69,7 @@
       </v-row>
       <v-row align="center" justify="center" class="mt-5">
         <span class="text-h2 indigo--text">ลอน C จ่ายกระดาษแล้ว :</span>
-        <span class="text-h2 ml-5">{{( targetLength != 0?finishLength / targetLength:0).toFixed(2)}} %</span>
+        <span class="text-h2 ml-5">{{( targetLength != 0?finishLength / targetLength * 100:0).toFixed(2)}} %</span>
       </v-row>
       <v-container>
         <v-row align="center" justify="center">
@@ -88,7 +88,7 @@
             <v-card color="indigo darken-4" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">คงเหลือ</v-row>
-                <v-row align="center" justify="center">{{targetLength-finishLength}}</v-row>
+                <v-row align="center" justify="center">{{(targetLength-finishLength).toFixed(2)}}</v-row>
                 <v-row align="center" justify="center">เมตร</v-row>
               </v-col>
             </v-card>
@@ -97,7 +97,7 @@
             <v-card color="purple" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">ทั้งหมด</v-row>
-                <v-row align="center" justify="center">{{targetLength}}</v-row>
+                <v-row align="center" justify="center">{{targetLength.toFixed(2)}}</v-row>
                 <v-row align="center" justify="center">เมตร</v-row>
               </v-col>
             </v-card>
@@ -120,7 +120,7 @@
             <v-card color="blue" class="text-h4 white--text">
               <v-col align="center" justify="center">
                 <v-row align="center" justify="center">เพิ่ม/ลด</v-row>
-                <v-row align="center" justify="center">{{offset}}</v-row>
+                <v-row align="center" justify="center">{{offset.toFixed(0)}}</v-row>
                 <v-row align="center" justify="center"
                   ><span class="mr-5">แผ่น</span>
                 </v-row>
@@ -201,22 +201,13 @@
         <v-col justify="center" style="width:100%;">
           <v-row align="center" justify="center">
             <v-switch
-              v-model="isSlowMode"
+              v-model="isNotSlowMode"
               inset
               color="green"
+              append-icon="speed"
+              :label="isNotSlowMode?'โหมดเร็ว':'โหมดช้า'"
+              style="transform:scale(1.5,1.5);"
             >
-              <template v-slot:label>
-                <span :class="isSlowMode ? 'green--text' : 'orange--text'">{{
-                  isSlowMode ? "โหมดช้า" : "โหมดเร็ว"
-                }}</span>
-                <v-icon
-                  style="margin-left:5px;"
-                  x-large
-                  :color="isSlowMode ? 'green' : 'orange'"
-                >
-                  {{ isSlowMode ? "speed" : "speed" }}
-                </v-icon>
-              </template>
             </v-switch>
             
           </v-row>
@@ -227,19 +218,10 @@
               v-model="isAutoMode"
               inset
               color="green"
+              :append-icon="isAutoMode ? 'sync' : 'sync_disabled'"
+              :label="isAutoMode ? 'ซิงค์ความเร็ว' : 'ไม่ซิงค์ความเร็ว'"
+              style="transform:scale(1.5,1.5);"
             >
-              <template v-slot:label>
-                <span :class="isAutoMode ? 'green--text' : 'orange--text'">{{
-                  isAutoMode ? "ซิงค์ความเร็ว" : "ไม่ซิงค์ความเร็ว"
-                }}</span>
-                <v-icon
-                  style="margin-left:5px;"
-                  x-large
-                  :color="isAutoMode ? 'green' : 'orange'"
-                >
-                  {{ isAutoMode ? "sync" : "sync_disabled" }}
-                </v-icon>
-              </template>
             </v-switch>
             
           </v-row>
@@ -435,13 +417,10 @@ export default {
       this.finishLength = data;
     },
      wastePaper_sheet:function( data ){
-      console.log(data);
       this.offset = data;
     },
     end:function(data){
-       if(this.currentJobOrder + 1  < this.group.jobs.length){
-         this.currentJobOrder++;
-       }
+      this.group = data;
     }
   },
 };
