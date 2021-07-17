@@ -54,6 +54,15 @@
       "
     >
     </PopupEditOntopComplete>
+    <PopupError
+      v-else-if="type == 'error'"
+      class="align-center"
+      :value="value"
+      @popup-error-event="
+        (event) =>
+          $emit('popup-event', { type: event.type, value: event.value })
+      "
+    ></PopupError>
   </div>
 </template>
 
@@ -63,6 +72,7 @@ import PopupAddWastPaper from "./PopupAddWastPaper";
 import PopupChangingPaper from "./PopupChangingPaper";
 import PopupEditOnTop from "./PopupEditOnTop";
 import PopupEditOntopComplete from "./PopupEditOntopComplete";
+import PopupError from "./PopupError";
 export default {
   components: {
     PopupConfirm,
@@ -70,6 +80,7 @@ export default {
     PopupChangingPaper,
     PopupEditOnTop,
     PopupEditOntopComplete,
+    PopupError
   },
   mounted() {},
   props: {

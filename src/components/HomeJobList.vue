@@ -140,6 +140,9 @@ export default {
           this.dialogType = "confirm";
           this.dialogValue = { str:'changingPaper' };
           this.isDialogShow = true;
+        }else if(event.value == "error"){
+          this.isDialogShow = false;
+          this.fetchData();
         }
       }else if (event.type == "confirm-start-job") {
         if (event.value.str == "cancel") {
@@ -193,6 +196,10 @@ export default {
           this.dialogValue = { errorMessage: 'กรุณาลองอีกครั้ง'};
           this.isDialogShow = true;
         }
+      }).catch(error=>{
+        this.dialogType = 'error';
+        this.dialogValue = { errorMessage: 'กรุณาลองอีกครั้ง'};
+        this.isDialogShow = true;
       });
     },
     startJob(group) {
