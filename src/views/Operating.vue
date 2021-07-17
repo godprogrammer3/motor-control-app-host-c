@@ -411,13 +411,19 @@ export default {
       this.$router.replace("/");
     },
     Lenght_target: function( data ){
-     this.targetLength = data;
+      if(data){
+        this.targetLength = data;
+      }
     },
     Lenght_C: function( data ){
-      this.finishLength = data;
+      if(data){
+        this.finishLength = data;
+      }
     },
-     wastePaper_sheet:function( data ){
-      this.offset = data;
+    wastePaper_sheet:function( data ){
+      if(data){
+        this.offset = data;
+      }
     },
     end:function(data){
       this.group = data;
